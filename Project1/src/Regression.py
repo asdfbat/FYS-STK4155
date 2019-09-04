@@ -1,4 +1,5 @@
 import numpy as np
+from KFold_iterator import KFold_iterator
 
 class Regression:
     def __init__(self):
