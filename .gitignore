@@ -240,3 +240,5 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+Project1/jupyter/.ipynb_checkpoints/testing-checkpoint.ipynb
