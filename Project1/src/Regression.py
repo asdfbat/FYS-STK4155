@@ -7,9 +7,7 @@ class Regression:
 
     def generate_generic_data(self, x, y, func):
         self.xshape, self.yshape = len(x), len(y)
-        print("asdf", x.shape, y.shape)
         x_mesh, y_mesh = np.meshgrid(x, y)
-        print(x_mesh.shape, y_mesh.shape)
         self.set_data(x_mesh, y_mesh, func(x_mesh, y_mesh))
 
     def load_matrix_data(self, A):
@@ -19,7 +17,6 @@ class Regression:
         self.set_data(x_mesh, y_mesh, A)
         
     def set_data(self, x_mesh, y_mesh, f):
-        print("f:", f.shape)
         self.f = f
         self.x_mesh, self.y_mesh = x_mesh, y_mesh
         self.x_flat, self.y_flat, self.f_flat = self.x_mesh.flatten(), self.y_mesh.flatten(), self.f.flatten()
