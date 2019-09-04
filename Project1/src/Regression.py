@@ -1,4 +1,5 @@
 import numpy as np
+from KFold_iterator import KFold_iterator
 
 class Regression:
     def __init__(self):
@@ -6,9 +7,7 @@ class Regression:
 
     def generate_generic_data(self, x, y, func):
         self.xshape, self.yshape = len(x), len(y)
-        print("asdf", x.shape, y.shape)
         x_mesh, y_mesh = np.meshgrid(x, y)
-        print(x_mesh.shape, y_mesh.shape)
         self.set_data(x_mesh, y_mesh, func(x_mesh, y_mesh))
 
     def load_matrix_data(self, A):
@@ -18,7 +17,6 @@ class Regression:
         self.set_data(x_mesh, y_mesh, A)
         
     def set_data(self, x_mesh, y_mesh, f):
-        print("f:", f.shape)
         self.f = f
         self.x_mesh, self.y_mesh = x_mesh, y_mesh
         self.x_flat, self.y_flat, self.f_flat = self.x_mesh.flatten(), self.y_mesh.flatten(), self.f.flatten()
@@ -53,7 +51,6 @@ class Regression:
         if solver=="OLS":
             beta = np.linalg.inv(XT@X)@XT@f
         elif solver=="Ridge":
-            print(lamda)
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
             print("TBA")
@@ -86,7 +83,6 @@ class Regression:
             beta = self.get_beta(X, output_train, solver=solver, lamda=lamda)
             output_test_pred = self.apply_model(beta, x_test, y_test, poly_order)
             output_pred[test_index] = output_test_pred
-            print("yo")
         output_pred_stacked = np.zeros((self.yshape, self.xshape))
         for i in range(self.yshape):
             output_pred_stacked[i] = output_pred[i*self.xshape : (i+1)*self.xshape]

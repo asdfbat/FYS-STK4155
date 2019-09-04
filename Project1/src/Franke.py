@@ -7,5 +7,5 @@ def Franke(x, y):
     term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
     return term1 + term2 + term3 + term4
 
-def FrankeNoise(x, y, sigma=0.1):
+def FrankeNoise(x, y, sigma=1):
     return Franke(x, y) + np.random.normal(0, sigma, np.shape(x))
