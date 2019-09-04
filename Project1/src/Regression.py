@@ -51,7 +51,6 @@ class Regression:
         if solver=="OLS":
             beta = np.linalg.inv(XT@X)@XT@f
         elif solver=="Ridge":
-            print(lamda)
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
             print("TBA")
@@ -84,7 +83,6 @@ class Regression:
             beta = self.get_beta(X, output_train, solver=solver, lamda=lamda)
             output_test_pred = self.apply_model(beta, x_test, y_test, poly_order)
             output_pred[test_index] = output_test_pred
-            print("yo")
         output_pred_stacked = np.zeros((self.yshape, self.xshape))
         for i in range(self.yshape):
             output_pred_stacked[i] = output_pred[i*self.xshape : (i+1)*self.xshape]
