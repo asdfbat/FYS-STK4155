@@ -242,3 +242,5 @@ TSWLatexianTemp*
 *.spl
 
 Project1/jupyter/.ipynb_checkpoints/testing-checkpoint.ipynb
+
+Project1/src/.ipynb_checkpoints/
