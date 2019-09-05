@@ -1,5 +1,6 @@
 import numpy as np
 from KFold_iterator import KFold_iterator
+from sklearn.model_selection import train_test_split
 
 class Regression:
     def __init__(self):
@@ -66,7 +67,7 @@ class Regression:
 
     def solveTrainTest(self, poly_order=5, test_fraction=0.25, solver="OLS", lamda=1e-4):
         x_flat, y_flat, f_flat = self.x_flat, self.y_flat, self.f_flat
-        x_train, x_test, y_train, y_test, output_train, outut_test = train_test_split(x_flat, y_flat, f_flat, test_size=test_fraction)
+        x_train, x_test, y_train, y_test, output_train, output_test = train_test_split(x_flat, y_flat, f_flat, test_size=test_fraction)
         X = self.get_X(x_train, y_train, poly_order)
         beta = self.get_beta(X, output_train, solver=solver, lamda=lamda)
         output_test_pred = self.apply_model(beta, x_test, y_test, poly_order)
