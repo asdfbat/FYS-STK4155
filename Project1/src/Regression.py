@@ -35,6 +35,7 @@ class Regression:
                 if 0 < ix + iy < poly_order+1:
                     i += 1
                     X[:,i] = x**ix*y**iy
+        print(np.linalg.cond(X.T@X))
         return X
 
     def apply_model(self, beta, x, y, poly_order):
@@ -50,7 +51,8 @@ class Regression:
     def get_beta(self, X, f, solver="OLS", lamda=0):
         XT = X.T
         if solver=="OLS":
-            beta = np.linalg.inv(XT@X)@XT@f
+            print("cond XT*X: ", np.linalg.cond(XT@X))
+            beta = np.linalg.pinv(XT@X)@XT@f
         elif solver=="Ridge":
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
