@@ -39,14 +39,14 @@ class Regression:
         print("Cond of XT*X: ", np.linalg.cond(X.T@X))
         return X
 
-    def apply_model(self, beta, x, y, poly_order):
+    def apply_model(self, beta):
         i = 0
         result = beta[0]
-        for ix in range(poly_order+1):
-            for iy in range(poly_order+1):
-                if 0 < ix + iy < poly_order+1:
+        for ix in range(self.poly_order+1):
+            for iy in range(self.poly_order+1):
+                if 0 < ix + iy < self.poly_order+1:
                     i += 1
-                    result += beta[i]*x**ix*y**iy
+                    result += beta[i]*self.x_mesh**ix*self.y_mesh**iy
         return result
 
     def get_beta(self, X, f, solver="OLS", lamda=0, max_iter=1e3, tol=1e-4):
@@ -59,8 +59,11 @@ class Regression:
         elif solver=="Ridge":
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
-            _Lasso = Lasso(alpha=lamda,max_iter=max_iter,tol=tol)
-            clf = _Lasso.fit()
+            _Lasso = Lasso(alpha=lamda,max_iter=max_iter,tol=tol,fit_intercept=True)
+            clf = _Lasso.fit(X,f)
+            beta = clf.coef_
+            #_Lasso = Lasso(alpha=lamda,max_iter=max_iter,tol=tol,fit_intercept=False)
+            #clf = _Lasso.fit(X[1:,:],f[1:,:])
         else:
             print("Dust")
             raise NotImplementedError
