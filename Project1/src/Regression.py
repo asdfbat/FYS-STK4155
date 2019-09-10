@@ -91,7 +91,7 @@ class Regression:
             output_train, output_test = f_flat[train_index], f_flat[test_index]
             X = self.get_X(x_train, y_train, poly_order)
             beta = self.get_beta(X, output_train, solver=solver, lamda=lamda)
-            output_test_pred = self.apply_model(beta, x_test, y_test, poly_order)
+            output_test_pred = self.apply_model(beta, x_test, y_test)
             output_pred[test_index] = output_test_pred
         output_pred_stacked = np.zeros((self.yshape, self.xshape))
         for i in range(self.yshape):
