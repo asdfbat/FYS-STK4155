@@ -48,7 +48,7 @@ class Regression:
                     result += beta[i]*x**ix*y**iy
         return result
 
-    def get_beta(self, X, f, solver="OLS", lamda=0):
+    def get_beta(self, X, f, solver="OLS", lamda=0, max_iter=1e3, tol=1e-4):
         XT = X.T
         if solver=="OLS":
             print("cond XT*X: ", np.linalg.cond(XT@X))
@@ -58,15 +58,16 @@ class Regression:
         elif solver=="Ridge":
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
-            print("TBA")
+            _Lasso = Lasso(alpha=lamda,,max_iter=max_iter,tol=tol)
+            clf = _Lasso.fot()
         else:
             print("Dust")
             raise NotImplementedError
         return beta
     
-    def solveCoefficients(self, poly_order=5, solver="OLS", lamda=1e-4):
+    def solveCoefficients(self, poly_order=5, solver="OLS", lamda=1e-4, max_iter=1e3, tol=1e-4):
         X = self.get_X(self.x_flat, self.y_flat, poly_order)
-        beta = self.get_beta(X, self.f_flat, solver=solver, lamda=lamda)
+        beta = self.get_beta(X, self.f_flat, solver=solver, lamda=lamda, max_iter=1e3, tol=1e-4)
         return beta
 
     def solveTrainTest(self, poly_order=5, test_fraction=0.25, solver="OLS", lamda=1e-4):
@@ -77,7 +78,7 @@ class Regression:
         output_test_pred = self.apply_model(beta, x_test, y_test, poly_order)
         return output_test, output_test_pred
         
-    def solveKFold(self, K=5, solver="OLS", poly_order=5, lamda=1e-4):
+    def solveKFold(self, K=5, solver="OLS", poly_order=5, lamda=1e-4, max_iter=1e3, tol=1e-4):
         x_flat, y_flat, f_flat = self.x_flat, self.y_flat, self.f_flat
         output_pred = np.zeros(self.nr_datapoints)
         kf = KFold_iterator(self.nr_datapoints, K)
