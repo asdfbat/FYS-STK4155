@@ -47,7 +47,6 @@ class Regression:
                 if 0 < ix + iy < poly_order+1:
                     i += 1
                     X[:,i] = x**ix*y**iy
-        print("Cond of XT*X: ", np.linalg.cond(X.T@X))
         return X
 
     def apply_model(self, beta, x, y, ravel_xy = True):
@@ -69,7 +68,6 @@ class Regression:
     def get_beta(self, X, f, solver="OLS", lamda=1e-4, max_iter=1e3, tol=1e-4):
         XT = X.T
         if solver=="OLS":
-            print("cond XT*X: ", np.linalg.cond(XT@X))
             beta = np.linalg.pinv(XT@X)@XT@f
         elif solver=="OLS_unsafe":
             beta = np.linalg.inv(XT@X)@XT@f
