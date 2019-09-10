@@ -39,14 +39,14 @@ class Regression:
         print("Cond of XT*X: ", np.linalg.cond(X.T@X))
         return X
 
-    def apply_model(self, beta):
+    def apply_model(self, beta, x, y):
         i = 0
         result = beta[0]
         for ix in range(self.poly_order+1):
             for iy in range(self.poly_order+1):
                 if 0 < ix + iy < self.poly_order+1:
                     i += 1
-                    result += beta[i]*self.x_mesh**ix*self.y_mesh**iy
+                    result += beta[i]*x**ix*y**iy
         return result
 
     def get_beta(self, X, f, solver="OLS", lamda=0, max_iter=1e3, tol=1e-4):
