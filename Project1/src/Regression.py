@@ -1,6 +1,7 @@
 import numpy as np
 from KFold_iterator import KFold_iterator
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import Lasso
 
 class Regression:
     def __init__(self):
@@ -58,8 +59,8 @@ class Regression:
         elif solver=="Ridge":
             beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
-            _Lasso = Lasso(alpha=lamda,,max_iter=max_iter,tol=tol)
-            clf = _Lasso.fot()
+            _Lasso = Lasso(alpha=lamda,max_iter=max_iter,tol=tol)
+            clf = _Lasso.fit()
         else:
             print("Dust")
             raise NotImplementedError
