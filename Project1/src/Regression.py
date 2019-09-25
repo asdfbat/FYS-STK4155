@@ -13,9 +13,10 @@ class Regression:
         x_mesh, y_mesh = np.meshgrid(x, y)
         self.set_data(x_mesh, y_mesh, func(x_mesh, y_mesh))
 
-    def load_matrix_data(self, A):
+    def load_matrix_data(self, A, x=None, y=None):
         self.yshape, self.xshape = A.shape
-        x = np.linspace(-1, 1, self.xshape); y = np.linspace(-1, 1, self.yshape)
+        if x is None and y is None:
+            x = np.linspace(-1, 1, self.xshape); y = np.linspace(-1, 1, self.yshape)
         x_mesh, y_mesh = np.meshgrid(x, y)
         self.set_data(x_mesh, y_mesh, A)
         
@@ -72,7 +73,7 @@ class Regression:
         elif solver=="OLS_unsafe":
             beta = np.linalg.inv(XT@X)@XT@f
         elif solver=="Ridge":
-            beta = np.linalg.inv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
+            beta = np.linalg.pinv(XT@X + np.identity(X.shape[1])*lamda)@XT@f
         elif solver=="Lasso":
             _Lasso = Lasso(alpha=lamda,max_iter=max_iter,tol=tol,fit_intercept=False)
             clf = _Lasso.fit(X,f)
