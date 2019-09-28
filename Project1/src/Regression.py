@@ -98,7 +98,9 @@ class Regression:
         output_test_pred = self.apply_model(beta, x_test, y_test, ravel_xy = False)
         return output_test, output_test_pred
         
-    def solveKFold(self, K=5, solver="OLS", poly_order=5, lamda=1e-4, max_iter=1e8, tol=1e-3):
+    def solveKFold(self, K=5, solver="OLS", poly_order=5, lamda=1e-4, max_iter=1e8, tol=1e-3, store_beta=False):
+        if store_beta:
+            self.beta = np.zeros(((poly_order + 1)*(poly_order + 2))//2)
         x_flat, y_flat, f_flat = self.x_flat, self.y_flat, self.f_flat
         output_pred = np.zeros(self.nr_datapoints)
         kf = KFold_iterator(self.nr_datapoints, K)
@@ -107,9 +109,13 @@ class Regression:
             output_train, output_test = f_flat[train_index], f_flat[test_index]
             X = self.get_X(x_train, y_train, poly_order)
             beta = self.get_beta(X, output_train, solver=solver, lamda=lamda, max_iter=max_iter, tol=tol)
+            if store_beta:
+                self.beta += beta
             output_test_pred = self.apply_model(beta, x_test, y_test, ravel_xy = False)
             output_pred[test_index] = output_test_pred
         output_pred_stacked = np.zeros((self.yshape, self.xshape))
         for i in range(self.yshape):
             output_pred_stacked[i] = output_pred[i*self.xshape : (i+1)*self.xshape]
+        if store_beta:
+            self.beta /= K
         return output_pred_stacked
