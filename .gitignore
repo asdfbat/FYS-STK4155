@@ -245,7 +245,7 @@ Project1/jupyter/.ipynb_checkpoints/testing-checkpoint.ipynb
 
 Project1/src/.ipynb_checkpoints/
 
-Project1/src/.DS_Store
+.DS_Store
 
 Project1/src/__pycache__/
 
@@ -260,3 +260,5 @@ Project2/src/.ipynb_checkpoints/
 Project2/data/.ipynb_checkpoints/
 
 Project2/src/.DS_Store
+
+Project2/data/.DS_Store
