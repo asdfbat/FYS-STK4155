@@ -41,7 +41,7 @@ epochs = 100
 runs = 1
 acc_test = np.zeros((runs,epochs))
 acc_train = np.zeros((runs,epochs))
-clf = Classification()
+clf = Classification(hidden_activation='sigmoid')
 
 for i in tqdm(range(runs)):
     X_train, X_test, Y_train, Y_test = train_test_split(input_data, output_one_hot,test_size=0.3)
