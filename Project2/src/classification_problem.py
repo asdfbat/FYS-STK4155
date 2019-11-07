@@ -72,7 +72,7 @@ class Classification():
 
     def _sigmoid_prime(self,z):
         """ Returns derivative of sigmoid """
-        sigmoid = self.sigmoid(z)
+        sigmoid = self._sigmoid(z)
         return sigmoid*(1-sigmoid)
 
     def _softmax(self,z):
