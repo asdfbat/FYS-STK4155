@@ -79,6 +79,9 @@ class NeuralNetwork:
         self.a_list[-1] = problem.output_activation(self.z_list[-1])
 
     def feed_forward_out(self, X):
+        """
+        Feed forward loop used for predictions on trained network on input data X
+        """
         problem = self.Problem
         # Input, Not using weights and biases for input layer
         a_list = [X]
@@ -132,7 +135,7 @@ class NeuralNetwork:
             # Finding gradients
             grad_b_list.append(np.sum(error_list[l],axis=0))
             # Note that the index for a_list in the following seem to be wrong, but it is not.
-            # In the equations we have a[l-1] and delta [l], the way the error is calculated 
+            # In the equations we have a[l-1] and delta [l], but the way the error is calculated 
             # the indices of a_list and error_list are scewed once relative to each other!
             grad_w_list.append(np.matmul(self.a_list[l].T,error_list[l]))
 
@@ -149,8 +152,8 @@ class NeuralNetwork:
         Stores accuracy and area under curve score after each epoch, to vizualise the learning rate
 
         Able to track different metrics over each epoch, given by string
-        * track = 'accuracy','AUC','r2'
-            @ If so, also needs tuple with appropriate X and Y data for test and training
+        * track = 'accuracy','AUC','r2',...
+            @ If so, also needs tuple with appropriate X and Y data for test and/or training
             @ one_hot_encoding - if the output target is encoded using one hot vector
         """
         if test_data != False:
@@ -203,8 +206,6 @@ class NeuralNetwork:
                         self.r2_test[i] = r2_score(Y_test,pred_test)
                     if train_data != False:
                         self.r2_train[i] = r2_score(Y_train,pred_train)
-
-
     
     def get_prediction(self, X):
         probabilities = self.feed_forward_out(X)
@@ -215,7 +216,6 @@ class NeuralNetwork:
         return probabilities
 
     ## Helper and misc functions ##
-
     def printshape(self,x,name='x'):
         """ Helper function for debugging, printing shapes of variable x """
         if isinstance(x,list):
