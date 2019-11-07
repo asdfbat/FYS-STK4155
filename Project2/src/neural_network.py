@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.metrics import roc_auc_score as AUC_score
+from sklearn.metrics import roc_auc_score as AUC_score, r2_score, mean_squared_error
 
 class NeuralNetwork:
 
@@ -37,6 +37,8 @@ class NeuralNetwork:
         self.accuracy_each_epoch_test = np.zeros(epochs)
         self.area_under_curve_train = np.zeros(epochs)
         self.area_under_curve_test = np.zeros(epochs)
+        self.r2_test = np.zeros(epochs)
+        self.r2_train = np.zeros(epochs)
 
         self.initialize_layers()
 
@@ -50,12 +52,12 @@ class NeuralNetwork:
         self.bias_list.append(np.zeros(self.n_output_neurons)+0.01)
         
         # Weights for l = [1,L-1]:
-        self.weights_list = [np.random.randn(self.n_features,n_hidden[0])]    # From input to l=1
+        self.weights_list = [np.random.normal(loc=0.0,scale=0.05,size=(self.n_features,n_hidden[0]))]    # From input to l=1
         # Dimension of layers l dependenent on layer l-1:
         for i in range(1,self.n_layers):
-            self.weights_list.append(np.random.randn(n_hidden[i-1],n_hidden[i]))
+            self.weights_list.append(np.random.normal(loc=0.0,scale=0.05,size=(n_hidden[i-1],n_hidden[i])))
         # appending output layer:
-        self.weights_list.append(np.random.randn(n_hidden[-1], self.n_output_neurons))
+        self.weights_list.append(np.random.normal(loc=0.0,scale=0.05,size=(n_hidden[-1], self.n_output_neurons)))
             
     def feed_forward(self):
         """
@@ -147,7 +149,7 @@ class NeuralNetwork:
         Stores accuracy and area under curve score after each epoch, to vizualise the learning rate
 
         Able to track different metrics over each epoch, given by string
-        * track = 'accuracy','AUC',...
+        * track = 'accuracy','AUC','r2'
             @ If so, also needs tuple with appropriate X and Y data for test and training
             @ one_hot_encoding - if the output target is encoded using one hot vector
         """
@@ -162,7 +164,9 @@ class NeuralNetwork:
         data_indices = np.arange(self.n_inputs)
 
         for i in range(self.epochs):
+            #print('epoch ',i)
             for j in range(self.iterations):
+                #print('iteration',j)
                 # pick datapoints with replacement
                 chosen_datapoints = np.random.choice(
                     data_indices, size=self.batch_size, replace=False
@@ -193,6 +197,13 @@ class NeuralNetwork:
                         self.area_under_curve_test[i] = AUC_score(Y_test,pred_test)
                     if train_data != False:
                         self.area_under_curve_train[i] = AUC_score(Y_train,pred_train)
+
+                if 'r2' in track:   # Track r2 score
+                    if test_data != False:
+                        self.r2_test[i] = r2_score(Y_test,pred_test)
+                    if train_data != False:
+                        self.r2_train[i] = r2_score(Y_train,pred_train)
+
 
     
     def get_prediction(self, X):

@@ -3,7 +3,7 @@ import numpy as np
 class Regression():
 
 
-    def __init__(self,hidden_activation='RELU',output_activation='RELU',cost_func='quadratic'):
+    def __init__(self,hidden_activation='RELU',output_activation='linear',cost_func='quadratic'):
         """
         Initializes a regression problem case to be used with class Neuralnetwork.
         Defining a cost function and activation functions for hidden and output layers,
@@ -17,8 +17,7 @@ class Regression():
         * quadratic (MSE or squared error)
         Activation functions:
            Output layer:
-        * sigmoid
-        * RELU
+        * linear
            Hidden layers (applied to all):
         * sigmoid
         * RELU
@@ -46,8 +45,13 @@ class Regression():
     def output_activation(self,z,prime=False):
         """
         Returns the appropriate activation function for the output layer given string from initialization.
-        if prime = False returns the derivative
+        if prime = True it returns the derivative
         """
+        if self.o_a == 'linear':
+            if prime:
+                return 1
+            else:
+                return z
         if self.o_a == 'RELU':
             if prime:
                 return self._RELU_prime(z)
