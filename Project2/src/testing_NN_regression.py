@@ -81,5 +81,5 @@ saving = True
 if saving:
     filename = '../figs/wh_r2_epochs_self_eta_{:.3e}_lmbd_{:.3e}.pdf'.format(eta,lmbd)
     print('saving figure to '+filename)
-    fig.savefig(filename)
+    fig.savefig(filename,bbox_inches='tight')
 plt.show()
