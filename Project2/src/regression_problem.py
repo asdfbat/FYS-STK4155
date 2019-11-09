@@ -108,11 +108,6 @@ class Regression():
         """ Returns derivative of sigmoid """
         sigmoid = self._sigmoid(z)
         return sigmoid*(1-sigmoid)
-
-    def _softmax(self,z):
-        """ Returns the softmax function """
-        exp_term = np.exp(z)
-        return exp_term/np.sum(exp_term, axis=1, keepdims=True)
     
     def _RELU(self,z):
         """ Returns the RELU function """
