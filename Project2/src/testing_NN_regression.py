@@ -19,7 +19,6 @@ mpl.rcParams['figure.dpi'] = 80
 mpl.rcParams['savefig.dpi'] = 100
 mpl.rcParams['font.size'] = 18
 
-
 parameter_names = ["Happiness", "Economy", "Family", "Health", "Freedom", "Trust", "Generosity"]
 data_df = pd.read_pickle("../data/world_happiness.pickle")[parameter_names]
 data = data_df.to_numpy()
@@ -27,18 +26,18 @@ output = data[:,0].reshape(-1,1)
 input_data = data[:,1:]
 
 hidden_neuron_list = [100]
-epochs = 400
-runs = 10
+epochs = 1000
+runs = 40
 r2_test_runs = np.zeros((runs,epochs))
 r2_train_runs = np.zeros((runs,epochs))
 r2_end_test = np.zeros(runs)
 r2_end_train = np.zeros(runs)
 reg = Regression(hidden_activation='RELU')
-eta = 1e-3#1e-3
-lmbd = 0#1e-2
+eta = 1e-3
+lmbd = 0
 
 for run in tqdm(range(runs)):
-    X_train, X_test, Y_train, Y_test = train_test_split(input_data, output,test_size=0.2)
+    X_train, X_test, Y_train, Y_test = train_test_split(input_data, output,test_size=0.3)
     Scaler = preprocessing.StandardScaler()
     X_train_scaled = Scaler.fit_transform(X_train)
     X_test_scaled = Scaler.transform(X_test)
@@ -64,14 +63,13 @@ r2_mean_train = np.mean(r2_end_train)
 
 fig,ax = plt.subplots()
 for i in range(runs):
-    ax.plot(r2_test_runs[i,:],color='crimson',label='test, mean = {:.2f}'.format(r2_mean_test))
     ax.plot(r2_train_runs[i,:],color='navy',label='train, mean = {:.2f}'.format(r2_mean_train))
+    ax.plot(r2_test_runs[i,:],color='crimson',label='test, mean = {:.2f}'.format(r2_mean_test))
     if i == 0:
         ax.legend(loc=4)
 ax.set_ylabel('R2 score')
 ax.set_xlabel('Epochs')
-ax.set_ylim(0,1.1)
-ax.axhline(y=1,linestyle='--',color='black')
+ax.set_ylim(0,1)
 fig.tight_layout()
 
 print('epochs',epochs,'runs',runs)
@@ -79,7 +77,7 @@ print('eta ',eta,' lambda ',lmbd,' neuron list ',hidden_neuron_list)
 print('r2 mean test = ',r2_mean_test, ' r2 mean train = ',r2_mean_train)
 saving = True
 if saving:
-    filename = '../figs/wh_r2_epochs_self_eta_{:.3e}_lmbd_{:.3e}.pdf'.format(eta,lmbd)
+    filename = '../figs/wh_r2_epochs_self_eta_{:.3g}_epochs{}_runs{}.pdf'.format(eta,epochs,runs)
     print('saving figure to '+filename)
     fig.savefig(filename,bbox_inches='tight')
 plt.show()
