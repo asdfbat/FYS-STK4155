@@ -82,7 +82,7 @@ class Regression():
         if self.cost == 'cross_entropy':
             return (a-t)
         if self.cost == 'quadratic':
-            return (a-t)*self.output_activation(z,prime=True)
+            return (a-t)/len(a)*self.output_activation(z,prime=True)
 
 
     ## Cost functions ##
