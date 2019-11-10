@@ -3,7 +3,7 @@ import numpy as np
 class Regression():
 
 
-    def __init__(self,hidden_activation='RELU',output_activation='linear',cost_func='quadratic'):
+    def __init__(self,hidden_activation='RELU',output_activation='linear',cost_func='MSE'):
         """
         Initializes a regression problem case to be used with class Neuralnetwork.
         Defining a cost function and activation functions for hidden and output layers,
@@ -14,7 +14,7 @@ class Regression():
         Currently uses/available
         Cost functions:
         * cross_entropy
-        * quadratic (MSE or squared error)
+        * mean squared error (MSE)
         Activation functions:
            Output layer:
         * linear
@@ -67,8 +67,8 @@ class Regression():
         """ Returns value of appropriate cost function """
         if self.cost == 'cross_entropy':
             return self._cross_entropy_cost(a,t)
-        if self.cost == 'quadratic':
-            return self._quadratic_cost(a,t)
+        if self.cost == 'MSE':
+            return self._MSE(a,t)
 
     def output_error(self,a,t,z=None):
         """
@@ -81,7 +81,7 @@ class Regression():
         """
         if self.cost == 'cross_entropy':
             return (a-t)
-        if self.cost == 'quadratic':
+        if self.cost == 'MSE':
             return (a-t)/len(a)*self.output_activation(z,prime=True)
 
 
@@ -96,7 +96,7 @@ class Regression():
 
     def _quadratic_cost(self,a,t):
         """ Computes the quadratic cost between output a and target t """
-        return 1/2*np.sum((a-t)**2)
+        return 1/2/len(a)*np.sum((a-t)**2)
 
     ## Activation functions ##
     ## -------------------- ##
