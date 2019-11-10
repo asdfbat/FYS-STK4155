@@ -27,7 +27,7 @@ input_data = data[:,1:]
 
 hidden_neuron_list = [100]
 epochs = 1000
-runs = 1
+runs = 40
 r2_test_runs = np.zeros((runs,epochs))
 r2_train_runs = np.zeros((runs,epochs))
 r2_end_test = np.zeros(runs)
@@ -75,7 +75,7 @@ fig.tight_layout()
 print('epochs',epochs,'runs',runs)
 print('eta ',eta,' lambda ',lmbd,' neuron list ',hidden_neuron_list)
 print('r2 mean test = ',r2_mean_test, ' r2 mean train = ',r2_mean_train)
-saving = False
+saving = True
 if saving:
     filename = '../figs/wh_r2_epochs_self_eta_{:.3g}_epochs{}_runs{}.pdf'.format(eta,epochs,runs)
     print('saving figure to '+filename)
