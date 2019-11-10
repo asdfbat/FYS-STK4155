@@ -167,9 +167,7 @@ class NeuralNetwork:
         data_indices = np.arange(self.n_inputs)
 
         for i in range(self.epochs):
-            #print('epoch ',i)
             for j in range(self.iterations):
-                #print('iteration',j)
                 # pick datapoints with replacement
                 chosen_datapoints = np.random.choice(
                     data_indices, size=self.batch_size, replace=False
