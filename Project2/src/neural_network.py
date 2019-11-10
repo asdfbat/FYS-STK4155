@@ -121,7 +121,7 @@ class NeuralNetwork:
             prev_error = error_list[-1]
             prev_w = self.weights_list[-l+1]
             current_z = self.z_list[-l]
-            error_hidden = np.matmul(prev_error,prev_w.T)*problem.hidden_activation(current_z,prime=True)  # CHECK ORDER IN MATMUL?
+            error_hidden = np.matmul(prev_error,prev_w.T)*problem.hidden_activation(current_z,prime=True)
             error_list.append(error_hidden)
 
         # Error_list is optained backwards, reverting to match layer numbers better, but note there is no error for input layer
@@ -136,7 +136,7 @@ class NeuralNetwork:
             grad_b_list.append(np.sum(error_list[l],axis=0))
             # Note that the index for a_list in the following seem to be wrong, but it is not.
             # In the equations we have a[l-1] and delta [l], but the way the error is calculated 
-            # the indices of a_list and error_list are scewed once relative to each other!
+            # the indices of a_list and error_list are skewed once relative to each other!
             grad_w_list.append(np.matmul(self.a_list[l].T,error_list[l]))
 
             if self.lmbd > 0.0: # If using regularization
