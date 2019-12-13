@@ -37,11 +37,26 @@ param_names = [
     "8. Bag",
     "9. Ankle boot"]
 
-with open("Jakob_guesses.dat", "a+") as outfile:
+if len(sys.argv) < 2:
+    raise ValueError("Please provide a filename as input.")
+else:
+    filename = str(sys.argv[1])
+
+path = "../data/"
+
+try:
+    with open(path + filename, "r") as infile:
+        idx, actual, guessed = np.loadtxt(path + filename).T
+        nr_items_done = len(idx)
+        nr_corrects = np.sum(actual == guessed)
+except:
+    nr_corrects = 0
+    nr_items_done = 0
+
+with open(path + filename, "a+") as outfile:
     plt.ion()
     plt.show()
-    nr_corrects = 0
-    for i in range(10000):
+    for i in range(nr_items_done, 10000):
         idx = np.random.randint(0, 10000)
         img = X_val[idx]
         plt.imshow(img)
@@ -59,7 +74,7 @@ with open("Jakob_guesses.dat", "a+") as outfile:
         answers = inquirer.prompt(questions)["item"]
         guessed_item = int(answers[0])
         correct_item = Y_val[idx]
-        print(guessed_item, correct_item)
+        # print(guessed_item, correct_item)
         if guessed_item == correct_item:
             nr_corrects += 1
             print(f"\033[92m Hurrah! You correctly guessed {answers}. \033[0m")
@@ -67,7 +82,7 @@ with open("Jakob_guesses.dat", "a+") as outfile:
         else:
             print(f"\033[91m Boooh! You guessed {answers}, but the correct item was {param_names[correct_item]}. \033[91m")
             print(f"\033[91m Your accuracy is now {100*nr_corrects/(i+1):.1f}% \033[0m")
-        
+        print(f"Item nr {i+1}")
         #pprint(answers)
         #pprint(guessed_item)
         
