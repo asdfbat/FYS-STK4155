@@ -26,14 +26,14 @@ output = data[:,0].reshape(-1,1)
 input_data = data[:,1:]
 
 hidden_neuron_list = [100]
-epochs = 1000
-runs = 40
+epochs = 2000
+runs = 10
 r2_test_runs = np.zeros((runs,epochs))
 r2_train_runs = np.zeros((runs,epochs))
 r2_end_test = np.zeros(runs)
 r2_end_train = np.zeros(runs)
 reg = Regression(hidden_activation='RELU')
-eta = 1e-3
+eta = 1e-2
 lmbd = 0
 
 for run in tqdm(range(runs)):

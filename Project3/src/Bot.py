@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import pandas as pd
 import seaborn as sns
-from keras.utils import np_utils
 
 from tqdm import trange
 import os
